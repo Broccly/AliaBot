@@ -8,9 +8,17 @@ from rich.spinner import Spinner
 from rich.panel import Panel
 from threading import Thread
 import pyfiglet
+from dotenv import load_dotenv
+
+load_dotenv()
 
 console = Console()
-genai.configure(api_key="AIzaSyCV4-bOUYdG3qulbCfsJ5SbSv_DPsmj10E")
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    console.print("[bold red]Error: GEMINI_API_KEY not found in environment variables.[/bold red]")
+    console.print("[yellow]Please set your API key in a .env file or environment variable.[/yellow]")
+    exit(1)
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 chat = model.start_chat()
 
